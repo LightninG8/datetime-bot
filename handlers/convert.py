@@ -27,15 +27,15 @@ async def set_second_zone(message: types.Message, state: FSMContext):
   await FSMState.next()
 
 async def finish_convert(message: types.Message, state: FSMContext):
-  state = await state.get_data()
+  data = await state.get_data()
 
-  tz1 = timezone(state['tz1'])
+  tz1 = timezone(data['tz1'])
   tz2 = timezone(message.text)
   
-  time1 = state['time1']
+  time1 = data['time1']
   time2 = tz1.localize(datetime.strptime(time1, "%H:%M")).astimezone(tz2).strftime("%H:%M")
 
-  await message.answer(f"Время {state['time1']} {state['tz1']} в зоне {message.text}: {time2}")
+  await message.answer(f"Время {data['time1']} {data['tz1']} в зоне {message.text}: {time2}")
 
   await state.finish()
 
